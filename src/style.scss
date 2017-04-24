@@ -1,4 +1,94 @@
+$fontcolor:  rgb(10%, 10%, 10%);
+$backgroundcolor: rgb(100%, 100%, 100%);
+
 body {
   font-family: "Roboto", sans-serif;
-  background: darken(white, 0.2);
+  color: $fontcolor;
+  background-color: $backgroundcolor;
+}
+
+.searchbar {
+
+}
+
+#noteList {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+}
+
+.note {
+  background: rgb(252, 240, 140);
+  width: 14em;
+  height: 17em;
+  border: 1px solid;
+  border-color: rgb(130, 130, 130);
+  box-shadow: .25em .25em .3em .05em rgb(170, 170, 170);
+  border-radius: 3px;
+  padding: .5em;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  position: absolute;
+}
+
+.text {
+  margin-top: .75em;
+  height: 90%;
+  width: 97%;
+  font-family: "Roboto", sans-serif;
+  color: $fontcolor;
+  font-size: 1.1em;
+}
+
+.note-header {
+  display: flex;
+  justify-content: space-between;
+}
+
+.header-left {
+  display: flex;
+  align-items: center;
+}
+
+.header-right {
+  display: flex;
+  align-items: center;
+}
+
+.header-icon {
+  margin-left: 5px;
+}
+
+.note-title {
+  font-size: 1.5em;
+}
+
+.textarea {
+  box-sizing: border-box;
+  height: 70%;
+  width: 90%;
+  font-family: "Roboto", sans-serif;
+  color: $fontcolor;
+  font-size: 1.2em;
+  resize: none;
+}
+
+.button-area {
+  width: 84%;
+  display: flex;
+  justify-content: flex-end;
+}
+
+button[type=modal-button] {
+  margin-left: 1em;
+  margin-top: 2em;
+  background: rgb(131,191,252);
+  border: none;
+  width: 7em;
+  height: 4em;
+}
+
+button[type=modal-button]:hover {
+  box-shadow: 0 0 .5em .2em rgba(100,100,100,.7);
 }

@@ -44,10 +44,18 @@
   "dependencies": {
     "autoprefixer": "^6.7.7",
     "axios": "^0.16.1",
+    "immutable": "^3.8.1",
     "jquery": "^3.2.1",
     "lodash.debounce": "^4.0.8",
     "react": "^15.5.4",
     "react-dom": "^15.5.4",
-    "react-router": "^4.1.1"
+    "react-draggable": "^2.2.3",
+    "react-fa": "^4.1.2",
+    "react-fontawesome": "^1.6.1",
+    "react-icons": "^2.2.3",
+    "react-modal": "^1.7.7",
+    "react-native-fa-icons": "^2.0.2",
+    "react-router": "^4.1.1",
+    "uuid": "^3.0.1"
   }
 }
