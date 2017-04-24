@@ -18,9 +18,9 @@ class SearchBar extends Component {
   }
   render() {
     return (
-      <div>
-        <input className="searchbar" onChange={this.onInputChange} value={this.state.noteTitle} placeholder={'New note title'} />
-        <button onClick={this.onSubmit}>Submit</button>
+      <div className="note-input">
+        <input className="searchbar" maxLength={40} onChange={this.onInputChange} value={this.state.noteTitle} placeholder={'New note title'} />
+        <button type="submit" onClick={this.onSubmit}>Submit</button>
       </div>
     );
   }

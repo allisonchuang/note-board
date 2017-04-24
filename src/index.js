@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import ReactDOM from 'react-dom';
 import Immutable from 'immutable';
+import marked from 'marked';
 import SearchBar from './components/search_bar';
 import NoteList from './components/note_list';
 import './style.scss';
@@ -14,7 +15,6 @@ class App extends Component {
       isEditing: false,
       currId: null,
       tempText: '',
-      tempTitle: '',
     };
     this.onInputChange = this.onInputChange.bind(this);
     this.updateNote = this.updateNote.bind(this);
@@ -74,7 +74,7 @@ class App extends Component {
               <div className="header-icon"><i onClick={(event) => {
                 this.updateNote(id, { text: this.state.tempText });
                 this.endEditing();
-              }} className="fa fa-pencil fa-lg" aria-hidden="true"
+              }} className="fa fa-check fa-lg" aria-hidden="true"
               /></div>
             </div>
             <div className="header-right">
@@ -93,15 +93,13 @@ class App extends Component {
             <div className="header-left">
               <div className="note-title">{title}</div>
               <div className="header-icon"><i onClick={() => { this.deleteNote(id); }} className="fa fa-trash-o fa-lg" aria-hidden="true" /></div>
-              <div className="header-icon"><i onClick={() => { this.startEditing(); this.setState({ currId: id }); }} className="fa fa-pencil fa-lg" aria-hidden="true" /></div>
+              <div className="header-icon"><i onClick={() => { this.startEditing(); this.setState({ currId: id, tempText: text }); }} className="fa fa-pencil fa-lg" aria-hidden="true" /></div>
             </div>
             <div className="header-right">
               <i className="fa fa-arrows-alt fa-lg note-mover" aria-hidden="true" />
             </div>
           </div>
-          <div className="text">
-            {text}
-          </div>
+          <div className="noteBody" dangerouslySetInnerHTML={{ __html: marked(text || '') }} />
         </div>
       );
     }
