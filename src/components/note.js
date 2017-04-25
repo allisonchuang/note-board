@@ -12,7 +12,7 @@ const Note = (props) => {
       zIndex={props.note.zIndex}
       onStart={props.onStartDrag}
       // help from Tim
-      onDrag={(e, ui) => props.updateNote(props.id, { x: ui.x, y: ui.y })}
+      onDrag={(e, ui) => props.updateNote(props.id, { title: props.note.title, text: props.note.text, x: ui.x, y: ui.y })}
       onStop={props.onStopDrag}
     >
       <div className="note">

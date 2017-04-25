@@ -4,6 +4,7 @@ import ReactDOM from 'react-dom';
 import Immutable from 'immutable';
 import SearchBar from './components/search_bar';
 import NoteList from './components/note_list';
+import * as firebasedb from './firebasedb';
 import './style.scss';
 
 class App extends Component {
@@ -17,6 +18,7 @@ class App extends Component {
       tempTitle: '',
       tempText: '',
     };
+    this.componentDidMount = this.componentDidMount.bind(this);
     this.onInputChange = this.onInputChange.bind(this);
     this.updateNote = this.updateNote.bind(this);
     this.deleteNote = this.deleteNote.bind(this);
@@ -26,34 +28,29 @@ class App extends Component {
     this.renderEditing = this.renderEditing.bind(this);
   }
 
+  componentDidMount() {
+    firebasedb.fetchNotes((notes) => {
+      this.setState({ notes: Immutable.Map(notes) });
+    });
+  }
+
   onInputChange(event) {
     this.setState({ tempTitle: event.target.value });
   }
 
   updateNote(id, fields) {
-    this.setState({
-      notes: this.state.notes.update(id, (n) => { return Object.assign({}, n, fields); }),
-    });
+    this.setState({});
+    firebasedb.updateNote(id, fields);
   }
 
   deleteNote(id) {
-    this.setState({
-      notes: this.state.notes.delete(id),
-    });
+    this.setState({});
+    firebasedb.deleteNote(id);
   }
 
   createNote(title) {
-    const id = Math.random() * 10;
-    const note = {
-      title,
-      text: null,
-      x: (Math.random() + 0.5) * 500,
-      y: (Math.random() + 0.5) * 100,
-      zIndex: 0,
-    };
-    this.setState({
-      notes: this.state.notes.set(id, note),
-    });
+    this.setState({});
+    firebasedb.createNote(title);
   }
 
   startEditing(id, title, text) {
