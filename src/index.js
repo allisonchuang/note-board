@@ -17,9 +17,11 @@ class App extends Component {
       currId: null,
       tempTitle: '',
       tempText: '',
+      currBoard: 'notes',
     };
     this.componentDidMount = this.componentDidMount.bind(this);
     this.onInputChange = this.onInputChange.bind(this);
+    this.changeBoard = this.changeBoard.bind(this);
     this.updateNote = this.updateNote.bind(this);
     this.deleteNote = this.deleteNote.bind(this);
     this.createNote = this.createNote.bind(this);
@@ -36,6 +38,14 @@ class App extends Component {
 
   onInputChange(event) {
     this.setState({ tempTitle: event.target.value });
+  }
+
+  changeBoard(name) {
+    this.setState({ currboard: name });
+    firebasedb.changeBoard(name);
+    firebasedb.fetchNotes((notes) => {
+      this.setState({ notes: Immutable.Map(notes) });
+    });
   }
 
   updateNote(id, fields) {
@@ -61,6 +71,8 @@ class App extends Component {
     this.setState({ isEditing: false });
   }
 
+  // renders a modal
+  // got it from https://github.com/reactjs/react-modal
   renderEditing(id, title, text) {
     if (this.state.isEditing && id === this.state.currId) {
       return (
@@ -101,7 +113,13 @@ class App extends Component {
   render() {
     return (
       <div>
-        <SearchBar id="searchbar" onSubmit={title => this.createNote(title)} />
+        <div className="top">
+          <SearchBar id="searchbar" onSubmit={title => this.createNote(title)} />
+          <div className="board-buttons">
+            <button type="board-button" disabled={this.state.currboard === 'notes'} onClick={() => this.changeBoard('notes')}>Board 1</button>
+            <button type="board-button" onClick={() => this.changeBoard('notes2')} disabled={this.state.currboard === 'notes2'}>Board 2</button>
+          </div>
+        </div>
         <NoteList notes={this.state.notes}
           updateNote={this.updateNote}
           deleteNote={this.deleteNote}

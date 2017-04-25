@@ -7,6 +7,35 @@ body {
   background-color: $backgroundcolor;
 }
 
+.top {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.board-buttons {
+  margin-right: 2em;
+}
+
+button[type="board-button"] {
+  font-family: "Roboto", sans-serif;
+  color: $fontcolor;
+  font-size: 1em;
+  width: 5em;
+  height: 2.5em;
+  border: 1px solid rgb(170, 160, 140);
+  border-radius: 4px;
+  background: rgb(240, 240, 240);
+}
+
+button[type="board-button"]:disabled {
+  background: rgb(70, 70, 70);
+}
+
+button[type="board-button"]:enabled:hover {
+  box-shadow: 0 0 .3em .1em rgb(100, 100, 100);
+}
+
 .note-input {
   margin-top: 1em;
   display: flex;

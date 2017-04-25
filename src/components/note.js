@@ -7,7 +7,7 @@ const Note = (props) => {
   return (
     <Draggable
       handle=".note-mover"
-      grid={[25, 25]}
+      grid={[100, 100]}
       position={{ x: props.note.x, y: props.note.y }}
       zIndex={props.note.zIndex}
       onStart={props.onStartDrag}

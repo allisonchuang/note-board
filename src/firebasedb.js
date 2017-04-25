@@ -9,39 +9,39 @@ const config = {
 firebase.initializeApp(config);
 
 const database = firebase.database();
+let board = 'notes';
+
+export function changeBoard(name) {
+  board = name;
+}
 
 export function deleteNote(id) {
-  database.ref('notes').child(id).remove();
+  database.ref(board).child(id).remove();
 }
 
 export function createNote(title) {  // from https://firebase.google.com/docs/database/web/read-and-write
-  // A post entry.
   const postData = {
     title,
     text: '',
-    x: (Math.random() + 0.5) * 500,
-    y: (Math.random() + 0.5) * 100,
-    zIndex: 0,
+    x: 50,
+    y: 50,
   };
 
-  // Get a key for a new Post.
-  const newNoteKey = firebase.database().ref('notes').push().key;
+  const newNoteKey = firebase.database().ref(board).push().key;
 
-  // Write the new post's data simultaneously in the posts list and the user's post list.
   const updates = {};
   updates[`${newNoteKey}`] = postData;
-  // updates[`/user-notes/${newNoteKey}`] = postData;
 
-  return firebase.database().ref('notes').update(updates);
+  return firebase.database().ref(board).update(updates);
 }
 
 export function updateNote(id, fields) {
   const updates = fields;
-  return firebase.database().ref('notes').child(id).update(updates);
+  return firebase.database().ref(board).child(id).update(updates);
 }
 
 export function fetchNotes(callback) {
-  firebase.database().ref('notes').on('value', (snapshot) => {
+  firebase.database().ref(board).on('value', (snapshot) => {
     callback(snapshot.val());
   });
 }
