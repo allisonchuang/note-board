@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
+import Modal from 'react-modal';
 import ReactDOM from 'react-dom';
 import Immutable from 'immutable';
-import marked from 'marked';
 import SearchBar from './components/search_bar';
 import NoteList from './components/note_list';
 import './style.scss';
@@ -14,6 +14,7 @@ class App extends Component {
       notes: Immutable.Map({}),
       isEditing: false,
       currId: null,
+      tempTitle: '',
       tempText: '',
     };
     this.onInputChange = this.onInputChange.bind(this);
@@ -55,8 +56,8 @@ class App extends Component {
     });
   }
 
-  startEditing() {
-    this.setState({ isEditing: true });
+  startEditing(id, title, text) {
+    this.setState({ isEditing: true, currId: id, tempTitle: title, tempText: text });
   }
 
   endEditing() {
@@ -67,41 +68,36 @@ class App extends Component {
     if (this.state.isEditing && id === this.state.currId) {
       return (
         <div>
-          <div className="note-header">
-            <div className="header-left">
-              <div className="note-title">{title}</div>
-              <div className="header-icon"><i onClick={() => { this.deleteNote(id); this.endEditing(); }} className="fa fa-trash-o fa-lg" aria-hidden="true" /></div>
-              <div className="header-icon"><i onClick={(event) => {
-                this.updateNote(id, { text: this.state.tempText });
+          <button onClick={this.openModal}>Open Modal</button>
+          <Modal
+            isOpen={this.state.isEditing}
+            onRequestClose={this.endEditing}
+            contentLabel="Modal"
+            className="modal"
+          >
+            <h1>Edit Note</h1>
+            <div className="title-editing">
+              <div className="title-edit-label">Edit title: </div>
+              <input className="modal-input" maxLength={40} defaultValue={title} onChange={(event) => { this.state.tempTitle = event.target.value; }} />
+            </div>
+            <div className="text-editing">
+              <div className="text-edit-label">Edit text: </div>
+              <textarea className="modal-textarea" defaultValue={text} onChange={(event) => { this.state.tempText = event.target.value; }} />
+            </div>
+            <div className="modal-buttons">
+              <button type="modal-button" onClick={this.endEditing}>Cancel</button>
+              <button type="modal-button" onClick={() => {
                 this.endEditing();
-              }} className="fa fa-check fa-lg" aria-hidden="true"
-              /></div>
+                this.updateNote(id, { title: this.state.tempTitle, text: this.state.tempText });
+                this.setState({ tempTitle: '', tempText: '' });
+              }}
+              >Finish</button>
             </div>
-            <div className="header-right">
-              <i className="fa fa-arrows-alt fa-lg note-mover" aria-hidden="true" />
-            </div>
-          </div>
-          <div className="text">
-            <textarea className="textarea" onChange={(event) => { this.state.tempText = event.target.value; }} defaultValue={text} />
-          </div>
+          </Modal>
         </div>
       );
     } else {
-      return (
-        <div>
-          <div className="note-header">
-            <div className="header-left">
-              <div className="note-title" max>{title}</div>
-              <div className="header-icon"><i onClick={() => { this.deleteNote(id); }} className="fa fa-trash-o fa-lg" aria-hidden="true" /></div>
-              <div className="header-icon"><i onClick={() => { this.startEditing(); this.setState({ currId: id, tempText: text }); }} className="fa fa-pencil fa-lg" aria-hidden="true" /></div>
-            </div>
-            <div className="header-right">
-              <i className="fa fa-arrows-alt fa-lg note-mover" aria-hidden="true" />
-            </div>
-          </div>
-          <div className="noteBody" dangerouslySetInnerHTML={{ __html: marked(text || '') }} />
-        </div>
-      );
+      return <div />;
     }
   }
 
@@ -111,7 +107,11 @@ class App extends Component {
         <SearchBar id="searchbar" onSubmit={title => this.createNote(title)} />
         <NoteList notes={this.state.notes}
           updateNote={this.updateNote}
+          deleteNote={this.deleteNote}
+          startEditing={this.startEditing}
+          endEditing={this.endEditing}
           renderEditing={this.renderEditing}
+          marked={this.marked}
         />
       </div>
     );
