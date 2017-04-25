@@ -1,5 +1,5 @@
 $fontcolor:  rgb(10%, 10%, 10%);
-$backgroundcolor: rgb(100%, 100%, 100%);
+$backgroundcolor: rgb(230, 220, 230);
 
 body {
   font-family: "Roboto", sans-serif;
@@ -14,6 +14,7 @@ body {
 
 .searchbar {
   box-sizing: border-box;
+  border: 1px solid rgb(150, 140, 120);
   padding-left: .7em;
   margin-left: 1em;
   width: 20em;
@@ -30,13 +31,13 @@ button[type="submit"] {
   font-size: 1.3em;
   font-family: "Roboto", sans-serif;
   color: rgb(50, 50, 50);
-  background: white;
-  border: 1px solid rgb(200, 200, 200);
+  background: rgb(240, 240, 240);
+  border: 1px solid rgb(170, 160, 140);
   border-radius: 2px;
 }
 
 button[type="submit"]:hover {
-  background: rgba(220, 220, 220, .5);
+  box-shadow: .05em .05em .1em .05em rgb(150, 150, 150);
 }
 
 #noteList {
@@ -46,7 +47,7 @@ button[type="submit"]:hover {
 }
 
 .note {
-  background: rgb(252, 240, 140);
+  background: rgb(161, 201, 245);
   min-width: 10em;
   min-height: 10em;
   max-width: 50em;
@@ -66,14 +67,6 @@ button[type="submit"]:hover {
   color: $fontcolor;
   font-size: 1.7em;
 }
-//
-// .text {
-//   width: 100%;
-//   margin-top: .3em;
-//   font-family: "Roboto", sans-serif;
-//   color: $fontcolor;
-//   font-size: 1.1em;
-// }
 
 .note-header {
   width: 100%;

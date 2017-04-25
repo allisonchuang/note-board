@@ -82,7 +82,7 @@ class App extends Component {
             </div>
           </div>
           <div className="text">
-            <textarea className="textarea" onChange={(event) => { this.state.tempText = event.target.value; }}>{text}</textarea>
+            <textarea className="textarea" onChange={(event) => { this.state.tempText = event.target.value; }} defaultValue={text} />
           </div>
         </div>
       );
@@ -91,7 +91,7 @@ class App extends Component {
         <div>
           <div className="note-header">
             <div className="header-left">
-              <div className="note-title">{title}</div>
+              <div className="note-title" max>{title}</div>
               <div className="header-icon"><i onClick={() => { this.deleteNote(id); }} className="fa fa-trash-o fa-lg" aria-hidden="true" /></div>
               <div className="header-icon"><i onClick={() => { this.startEditing(); this.setState({ currId: id, tempText: text }); }} className="fa fa-pencil fa-lg" aria-hidden="true" /></div>
             </div>
