@@ -1,11 +1,13 @@
 import React, { Component } from 'react';
+import io from 'socket.io-client';
 import Modal from 'react-modal';
 import ReactDOM from 'react-dom';
 import Immutable from 'immutable';
 import SearchBar from './components/search_bar';
 import NoteList from './components/note_list';
-import * as firebasedb from './firebasedb';
 import './style.scss';
+
+const socketserver = 'http://localhost:9090';
 
 class App extends Component {
   constructor(props) {
@@ -19,9 +21,16 @@ class App extends Component {
       tempText: '',
       currBoard: 'notes',
     };
+
+    this.socket = io(socketserver);
+    this.socket.on('connect', () => { console.log('socket.io connected'); });
+    this.socket.on('disconnect', () => { console.log('socket.io disconnected'); });
+    this.socket.on('reconnect', () => { console.log('socket.io reconnected'); });
+    this.socket.on('error', (error) => { console.log(error); });
+
     this.componentDidMount = this.componentDidMount.bind(this);
     this.onInputChange = this.onInputChange.bind(this);
-    this.changeBoard = this.changeBoard.bind(this);
+    // this.changeBoard = this.changeBoard.bind(this);
     this.updateNote = this.updateNote.bind(this);
     this.deleteNote = this.deleteNote.bind(this);
     this.createNote = this.createNote.bind(this);
@@ -31,7 +40,7 @@ class App extends Component {
   }
 
   componentDidMount() {
-    firebasedb.fetchNotes((notes) => {
+    this.socket.on('notes', (notes) => {
       this.setState({ notes: Immutable.Map(notes) });
     });
   }
@@ -40,27 +49,27 @@ class App extends Component {
     this.setState({ tempTitle: event.target.value });
   }
 
-  changeBoard(name) {
-    this.setState({ currboard: name });
-    firebasedb.changeBoard(name);
-    firebasedb.fetchNotes((notes) => {
-      this.setState({ notes: Immutable.Map(notes) });
-    });
-  }
+  // changeBoard(name) {
+  //   this.setState({ currboard: name });
+  //   firebasedb.changeBoard(name);
+  //   this.socket.on('notes', (notes) => {
+  //     this.setState({ notes: Immutable.Map(notes) });
+  //   });
+  // }
 
   updateNote(id, fields) {
     this.setState({});
-    firebasedb.updateNote(id, fields);
+    this.socket.emit('updateNote', id, fields);
   }
 
   deleteNote(id) {
     this.setState({});
-    firebasedb.deleteNote(id);
+    this.socket.emit('deleteNote', id);
   }
 
-  createNote(title) {
+  createNote(note) {
     this.setState({});
-    firebasedb.createNote(title);
+    this.socket.emit('createNote', note);
   }
 
   startEditing(id, title, text) {
